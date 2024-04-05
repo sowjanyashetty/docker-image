@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory Management</title>
+    <style>
+      /* Simple CSS for styling purposes */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .button {
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: background-color 0.3s ease;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+      form {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+      }
+      input[type="text"] {
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      input[type="submit"] {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+      }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+      #ProductsList {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      #ProductsList th,
+      #ProductsList td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      #ProductsList th {
+        background-color: #4caf50; /* Green */
+        color: white;
+      }
+      #ProductsList tr:nth-child(even) {
+        background-color: #f2f2f2; /* Light gray */
+      }
+      #ProductsList tr:hover {
+        background-color: #ddd; /* Darker gray */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Inventory Management</h1>
+    <div class="button-container">
+      <button class="button" id="addButton" onclick="showForm()">
+        Add Product
+      </button>
+      <button class="button" id="orderButton">Order Products</button>
+      <button class="button" id="viewButton" onclick="get()">
+        View Products
+      </button>
+    </div>
+    <form id="addProductForm">
+      <input type="text" id="productId" placeholder="Product ID" required />
+      <input type="text" id="productName" placeholder="Product Name" required />
+      <input
+        type="text"
+        id="productDescription"
+        placeholder="Product Description"
+        required
+      />
+      <input type="submit" value="Add Product" />
+    </form>
+    <!-- Products list table -->
+    <table id="ProductsList">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody id="ProductsListBody">
+        <!-- Products records will be inserted here dynamically -->
+      </tbody>
+    </table>
+
+    <script>
+      // JavaScript function to show the add product form
+      function showForm() {
+        var form = document.getElementById("addProductForm");
+        if (form.style.display === "none") {
+          form.style.display = "flex";
+        } else {
+          form.style.display = "none";
+        }
+      }
+
+      // JavaScript function to fetch and display products
+      async function viewProducts() {
+        const endpoint = "/data-api/rest/Person"; // Replace this with your actual endpoint
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        console.table(data.value);
+      }
+      async function get() {
+        const id = 1;
+        const endpoint = `/data-api/rest/Person/Id`;
+        const response = await fetch(`${endpoint}/${id}`);
+        const result = await response.json();
+        console.table(result.value);
+      }
+    </script>
+  </body>
+</html>
